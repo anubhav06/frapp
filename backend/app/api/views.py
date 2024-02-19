@@ -98,12 +98,17 @@ def create_book(request):
     bookID = request.data['bookID']
     title = request.data['title']
     author = request.data['author']
-    quantity = request.data['quantity']
 
-    book = Books(bookID=bookID, title=title, author=author, quantity=quantity)
+    if Books.objects.filter(bookID=bookID).exists():
+        book = Books.objects.get(bookID=bookID)
+        book.quantity += 1
+        book.save()
+        return Response({'message': 'Book already exists. Quantity increased by 1'})
+
+    book = Books(bookID=bookID, title=title, author=author, quantity=1)
     book.save()
 
-    return Response({'message': 'Book created successfully'})
+    return Response({'message': 'Book added successfully'})
 
 
 @api_view(['GET'])
@@ -130,13 +135,16 @@ def update_book(request):
     author = request.data['author']
     quantity = request.data['quantity']
 
-    book = Books.objects.get(bookID=bookID)
-    book.title = title
-    book.author = author
-    book.quantity = quantity
-    book.save()
+    try:
+        book = Books.objects.get(bookID=bookID)
+        book.title = title
+        book.author = author
+        book.quantity = quantity
+        book.save()
 
-    return Response({'message': 'Book updated successfully'})
+        return Response({'message': 'Book updated successfully'})
+    except Exception as e:
+        return Response({'message': 'Error: ' + str(e)})
 
 
 @api_view(['DELETE'])
@@ -144,10 +152,13 @@ def delete_book(request):
 
     bookID = request.data['bookID']
 
-    book = Books.objects.get(bookID=bookID)
-    book.delete()
+    try:
+        book = Books.objects.get(bookID=bookID)
+        book.delete()
 
-    return Response({'message': 'Book deleted successfully'})
+        return Response({'message': 'Book deleted successfully'})
+    except Exception as e:
+        return Response({'message': 'Error: ' + str(e)})
 
 # Issue book to a member
 

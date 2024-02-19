@@ -1,10 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import LandingPage from './pages/LandingPage';
-
-import Modal from 'react-modal';
-
-// Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
-// Modal.setAppElement('#root');
+import MembersPage from './pages/MembersPage';
+import BooksPage from './pages/BooksPage';
 
 function App() {
 
@@ -13,6 +10,8 @@ function App() {
       <Router>
         <Routes>
           <Route element={<LandingPage />} path='/' />
+          <Route element={<MembersPage />} path='/members' />
+          <Route element={<BooksPage />} path='/books' />
         </Routes>
       </Router>
     </div>
