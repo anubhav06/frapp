@@ -257,6 +257,26 @@ def get_fees(request):
 
     return Response({'totalFees': totalFees, 'bookFee': bookFee})
 
+
+# Search books
+@api_view(['GET'])
+def search_books(request):
+
+    title = request.query_params.get('title')
+    author = request.query_params.get('author')
+
+    books = Books.objects.filter(title__icontains=title, author__icontains=author)
+    bookList = []
+    for book in books:
+        bookList.append({
+            'bookID': book.bookID,
+            'title': book.title,
+            'author': book.author,
+            'quantity': book.quantity
+        })
+
+    return Response(bookList)
+
 # --------- FOR DRF DOCS ------------
 
 

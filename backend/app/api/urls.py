@@ -23,4 +23,6 @@ urlpatterns = [
     path('return-book/', views.return_book, name="returnBook"),
     path('get-borrowed-books/', views.get_borrowed_books, name="getBorrowedBooks"),
     path('get-fees/', views.get_fees, name="getFees"),
+
+    path('search-books/', views.search_books, name="searchBooks"),
 ]

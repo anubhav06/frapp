@@ -6,6 +6,7 @@ Modal.setAppElement('#root') // replace '#root' with the id of your app's root e
 const BooksPage = () => {
 
     let [books, setBooks] = useState([])
+    let [searchedBooks, setSearchedBooks] = useState([])
     let [modalIsOpen, setModalIsOpen] = useState(false)
     let [editingBook, setEditingBook] = useState(null)
 
@@ -83,6 +84,26 @@ const BooksPage = () => {
         }
     }
 
+    let searchBooks = async (e) => {
+        e.preventDefault()
+
+        // Make a POST request to the API.
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/search-books/?title=${e.target.title.value}&author=${e.target.author.value}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        let data = await response.json()
+
+        if (response.status === 200) {
+            setSearchedBooks(data)
+            console.log("Data: ", data) 
+        } else {
+            alert("Error: ", data.message)
+        }
+    }
+
 
     useEffect(() => {
         let getBooks = async () => {
@@ -111,6 +132,28 @@ const BooksPage = () => {
                 <input type="text" name='author' placeholder="Author(s)" />
                 <button type="submit">Add Book</button>
             </form>
+
+            <h2> Search Books </h2>
+            <form onSubmit={searchBooks}>
+                <input type="text" name='title' placeholder="Title" />
+                <input type="text" name='author' placeholder="Author(s)" />
+                <button type="submit">Search</button>
+            </form>
+            <div>
+                {searchedBooks.map((book, index) => {
+                    return (
+                        <div key={index}>
+                            {index + 1}.&nbsp;
+                            <li>
+                                Book ID: {book.bookID} <br />
+                                Title: {book.title} <br />
+                                Author(s): {book.author} <br />
+                                Quantity: {book.quantity} <br />
+                            </li>
+                        </div>
+                    )
+                })}
+            </div>
 
             <h2> Book list </h2>
             <ul>
