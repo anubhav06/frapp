@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from app.models import Books, Members, BorrowedBooks
 import requests
+from datetime import datetime
 
 # Member CRUD Operations
 
@@ -117,6 +118,8 @@ def get_books(request):
     books = Books.objects.all()
     bookList = []
     for book in books:
+        if book.quantity == 0:
+            continue
         bookList.append({
             'bookID': book.bookID,
             'title': book.title,
@@ -178,6 +181,7 @@ def issue_book(request):
 
     book.quantity -= 1
     book.save()
+    
 
     return Response({'message': 'Book issued successfully'})
 
@@ -203,28 +207,52 @@ def return_book(request):
 
     return Response({'message': 'Book returned successfully'})
 
+# Get borrowed books for a member
+@api_view(['POST'])
+def get_borrowed_books(request):
+
+    email = request.data['email']
+    member = Members.objects.get(email=email)
+    borrowed = BorrowedBooks.objects.filter(member=member, returned=False)
+
+    bookList = []
+    for book in borrowed:
+        bookList.append({
+            'bookID': book.book.bookID,
+            'title': book.book.title,
+            'author': book.book.author,
+            'dateBorrowed': book.dateBorrowed
+        })
+
+    return Response(bookList)
 
 # Get fees for a member
-@api_view(['GET'])
+@api_view(['POST'])
 def get_fees(request):
 
     bookID = request.data['bookID']
     book = Books.objects.get(bookID=bookID)
     email = request.data['email']
     member = Members.objects.get(email=email)
+    dateReturned = request.data['dateReturned']
+
+    dateReturned = datetime.strptime(dateReturned, "%Y-%m-%d").date()
+
+    print("Date Returned: ", dateReturned)
 
     borrowed = BorrowedBooks.objects.filter(member=member, returned=False)
 
     # Total Fees is the sum of all the fees for the books borrowed
     # Book Fee is the fee for the book that the user is interested in returning
-    # Common fine of Rs. 10 per day
+    # Common fee of Rs. 10 per day
     totalFees = 0
     bookFee = 0
     for book in borrowed:
-        days = book.dateReturned - book.dateBorrowed
+        print("Date Borrowed: ", book.dateBorrowed)
+        days = dateReturned - book.dateBorrowed
         fee = 10 * days.days
         totalFees += fee
-        if book.book == bookID:
+        if book.book.bookID == bookID:
             bookFee = fee
 
     return Response({'totalFees': totalFees, 'bookFee': bookFee})
@@ -236,7 +264,17 @@ def get_fees(request):
 def get_routes(request):
 
     routes = [
-        '/',
-        'register/'
+        'create-member/',
+        'get-members/',
+        'update-member/',
+        'delete-member/',
+        'import-books/',
+        'create-book/',
+        'get-books/',
+        'update-book/',
+        'delete-book/',
+        'issue-book/',
+        'return-book/',
+        'get-fees/',
     ]
     return Response(routes)

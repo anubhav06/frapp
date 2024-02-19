@@ -65,7 +65,7 @@ const MembersPage = () => {
         e.preventDefault()
 
         // Make a PUT request to the API.
-        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/update -member/`, {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/update-member/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

@@ -21,5 +21,6 @@ urlpatterns = [
     # Books issue and return
     path('issue-book/', views.issue_book, name="issueBook"),
     path('return-book/', views.return_book, name="returnBook"),
+    path('get-borrowed-books/', views.get_borrowed_books, name="getBorrowedBooks"),
     path('get-fees/', views.get_fees, name="getFees"),
 ]
