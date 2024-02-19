@@ -4,16 +4,21 @@ from app.models import Books, Members, BorrowedBooks
 import requests
 
 # Member CRUD Operations
+
+
 @api_view(['POST'])
 def create_member(request):
 
     email = request.data['email']
     name = request.data['name']
 
-    member = Members(email=email, name=name)
-    member.save()
+    try:
+        member = Members(email=email, name=name)
+        member.save()
+        return Response({'message': 'Member created successfully'})
+    except Exception as e:
+        return Response({'message': 'Error: ' + str(e)})
 
-    return Response({'message': 'Member created successfully'})
 
 @api_view(['GET'])
 def get_members(request):
@@ -25,8 +30,9 @@ def get_members(request):
             'email': member.email,
             'name': member.name
         })
-    
+
     return Response(memberList)
+
 
 @api_view(['PUT'])
 def update_member(request):
@@ -34,23 +40,30 @@ def update_member(request):
     email = request.data['email']
     name = request.data['name']
 
-    member = Members.objects.get(email=email)
-    member.name = name
-    member.save()
+    try:
+        member = Members.objects.get(email=email)
+        member.name = name
+        member.save()
+        return Response({'message': 'Member updated successfully'})
+    except Exception as e:
+        return Response({'message': 'Error: ' + str(e)})
 
-    return Response({'message': 'Member updated successfully'})
 
 @api_view(['DELETE'])
 def delete_member(request):
 
     email = request.data['email']
 
-    member = Members.objects.get(email=email)
-    member.delete()
-
-    return Response({'message': 'Member deleted successfully'})
+    try:
+        member = Members.objects.get(email=email)
+        member.delete()
+        return Response({'message': 'Member deleted successfully'})
+    except Exception as e:
+        return Response({'message': 'Error: ' + str(e)})
 
 # Books CRUD Operations
+
+
 @api_view(['POST'])
 def import_books(request):
 
@@ -78,6 +91,7 @@ def fetch_books(title, quantity):
     # If more than N books are fetched, trim the list down to N books
     return books[:quantity]
 
+
 @api_view(['POST'])
 def create_book(request):
 
@@ -91,6 +105,7 @@ def create_book(request):
 
     return Response({'message': 'Book created successfully'})
 
+
 @api_view(['GET'])
 def get_books(request):
 
@@ -103,8 +118,9 @@ def get_books(request):
             'author': book.author,
             'quantity': book.quantity
         })
-    
+
     return Response(bookList)
+
 
 @api_view(['PUT'])
 def update_book(request):
@@ -122,6 +138,7 @@ def update_book(request):
 
     return Response({'message': 'Book updated successfully'})
 
+
 @api_view(['DELETE'])
 def delete_book(request):
 
@@ -133,6 +150,8 @@ def delete_book(request):
     return Response({'message': 'Book deleted successfully'})
 
 # Issue book to a member
+
+
 @api_view(['POST'])
 def issue_book(request):
 
@@ -162,7 +181,8 @@ def return_book(request):
     member = Members.objects.get(email=email)
     dateReturned = request.data['dateReturned']
 
-    borrowed = BorrowedBooks.objects.get(book=book, member=member, returned=False)
+    borrowed = BorrowedBooks.objects.get(
+        book=book, member=member, returned=False)
     borrowed.returned = True
     borrowed.dateReturned = dateReturned
     borrowed.save()
@@ -196,9 +216,11 @@ def get_fees(request):
         if book.book == bookID:
             bookFee = fee
 
-    return Response({'totalFees': totalFees, 'bookFee': bookFee}) 
+    return Response({'totalFees': totalFees, 'bookFee': bookFee})
 
 # --------- FOR DRF DOCS ------------
+
+
 @api_view(['GET'])
 def get_routes(request):
 

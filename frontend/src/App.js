@@ -4,7 +4,7 @@ import LandingPage from './pages/LandingPage';
 import Modal from 'react-modal';
 
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
-Modal.setAppElement('#root');
+// Modal.setAppElement('#root');
 
 function App() {
 
