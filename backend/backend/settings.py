@@ -28,7 +28,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = [
+    config('CORS_BACKEND_HOST'),
+    config('CORS_FRONTEND_HOST'),
+]
+
+CORS_ALLOWED_ORIGINS = [
+    config('CORS_BACKEND_HOST'),
+    config('CORS_FRONTEND_HOST'),
+]
+
 
 # Application definition
 
