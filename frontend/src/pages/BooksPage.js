@@ -7,6 +7,7 @@ const BooksPage = () => {
 
     let [books, setBooks] = useState([])
     let [searchedBooks, setSearchedBooks] = useState([])
+    let [importedBooks, setImportedBooks] = useState([])
     let [modalIsOpen, setModalIsOpen] = useState(false)
     let [editingBook, setEditingBook] = useState(null)
 
@@ -77,13 +78,14 @@ const BooksPage = () => {
 
         if (response.status === 200) {
             alert(data.message)
-            setBooks(books.map(book => book.bookID === editingBook.bookID ? { ...book, bookID: e.target.bookID.value, title: e.target.title.value , author: e.target.author.value, quantity: e.target.quantity.value} : book))
+            setBooks(books.map(book => book.bookID === editingBook.bookID ? { ...book, bookID: e.target.bookID.value, title: e.target.title.value, author: e.target.author.value, quantity: e.target.quantity.value } : book))
             closeModal()
         } else {
             alert("Error: ", data.message)
         }
     }
 
+    // Search available books from the system
     let searchBooks = async (e) => {
         e.preventDefault()
 
@@ -98,12 +100,57 @@ const BooksPage = () => {
 
         if (response.status === 200) {
             setSearchedBooks(data)
-            console.log("Data: ", data) 
+            console.log("Data: ", data)
         } else {
             alert("Error: ", data.message)
         }
     }
 
+    // Import Books from the Frappe API
+    let importBooks = async (e) => {
+        e.preventDefault()
+
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/import-books/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'quantity': e.target.quantity.value, 'title': e.target.title.value })
+        })
+        let data = await response.json()
+
+        if (response.status === 200) {
+            alert(data.message)
+            setImportedBooks(data.books)
+        }
+        else {
+            alert("Error: ", data.message)
+        }
+    }
+
+    let insertAllBooks = async (e) => {
+        e.preventDefault()
+
+        // Loop over the importedBooks array and make a POST request to the API for each book.
+        for (let book of importedBooks) {
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/create-book/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'bookID': book.bookID, 'title': book.title, 'author': book.authors })
+            })
+            let data = await response.json()
+
+            if (response.status !== 200) {
+                alert("Error: ", data.message)
+            }
+        }
+        alert("All books have been inserted.")
+
+        // Reload the page to see the new books in the list.
+        window.location.reload()
+    }
 
     useEffect(() => {
         let getBooks = async () => {
@@ -132,6 +179,32 @@ const BooksPage = () => {
                 <input type="text" name='author' placeholder="Author(s)" />
                 <button type="submit">Add Book</button>
             </form>
+
+            <h2> Import Books </h2>
+            <form onSubmit={importBooks}>
+                <input type="number" name='quantity' placeholder="Quantity" />
+                <input type='text' name="title" placeholder="Title" />
+                <button type="submit">Import</button>
+            </form>
+            <div>
+                {importedBooks.length > 0 && (
+                    <button onClick={insertAllBooks}>Insert All Books</button>
+                )}
+                
+                {importedBooks.map((book, index) => {
+                    return (
+                        <div key={index}>
+                            {index + 1}.&nbsp;
+                            <li>
+                                Book ID: {book.bookID} <br />
+                                Title: {book.title} <br />
+                                Author(s): {book.authors} <br />
+                            </li>
+                        </div>
+                    )
+                }
+                )}
+            </div>
 
             <h2> Search Books </h2>
             <form onSubmit={searchBooks}>

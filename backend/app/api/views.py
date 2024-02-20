@@ -71,8 +71,8 @@ def import_books(request):
     title = request.data['title']
     quantity = request.data['quantity']
 
-    books = fetch_books(title, quantity)
-    return Response(books)
+    books = fetch_books(title, int(quantity))
+    return Response({'message': 'Import books successfull', 'books': books})
 
 
 def fetch_books(title, quantity):
@@ -82,9 +82,17 @@ def fetch_books(title, quantity):
 
     while len(books) < quantity:
         params = {'page': page, 'title': title}
-        response = requests.get(base_url, params=params)
-        data = response.json()
-        books.extend(data['message'])
+        try:
+            response = requests.get(base_url, params=params)
+            data = response.json()
+            new_books = data['message']
+            books.extend(new_books)
+        except Exception as e:
+            return Response({'message': 'Error: ' + str(e)})
+
+        # If the API returned less than 20 books, we have fetched all available books
+        if len(new_books) < 20:
+            break
 
         # Increment the page number for the next request
         page += 1
@@ -181,7 +189,6 @@ def issue_book(request):
 
     book.quantity -= 1
     book.save()
-    
 
     return Response({'message': 'Book issued successfully'})
 
@@ -208,6 +215,8 @@ def return_book(request):
     return Response({'message': 'Book returned successfully'})
 
 # Get borrowed books for a member
+
+
 @api_view(['POST'])
 def get_borrowed_books(request):
 
@@ -227,6 +236,8 @@ def get_borrowed_books(request):
     return Response(bookList)
 
 # Get fees for a member
+
+
 @api_view(['POST'])
 def get_fees(request):
 
@@ -265,7 +276,8 @@ def search_books(request):
     title = request.query_params.get('title')
     author = request.query_params.get('author')
 
-    books = Books.objects.filter(title__icontains=title, author__icontains=author)
+    books = Books.objects.filter(
+        title__icontains=title, author__icontains=author)
     bookList = []
     for book in books:
         bookList.append({
