@@ -141,3 +141,9 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# https://github.com/heroku/django-heroku/issues/39
+if 'I_AM_HEROKU' in os.environ:
+    import django_heroku
+    django_heroku.settings(locals())
