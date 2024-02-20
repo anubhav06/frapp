@@ -289,6 +289,23 @@ def search_books(request):
 
     return Response(bookList)
 
+@api_view(['GET'])
+def get_book_stock(request):
+
+    # Find the total number of books
+    books = Books.objects.all()
+    totalBooks = 0
+    for book in books:
+        totalBooks += book.quantity
+
+    borrowedBooks = BorrowedBooks.objects.filter(returned=False)
+    borrowed = 0
+    for book in borrowedBooks:
+        borrowed += 1
+
+    return Response({'totalBooks': totalBooks, 'borrowedBooks': borrowed})
+    
+
 # --------- FOR DRF DOCS ------------
 
 

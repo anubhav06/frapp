@@ -35,11 +35,13 @@
 .booksPage form {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin: 0 auto 20px auto; /* top and bottom margins are 20px, left and right margins are auto */
     padding: 20px;
     border-radius: 5px;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 80%; /* you can adjust this value to your liking */
+    max-width: 600px; /* this will prevent the form from becoming too wide on large screens */
 }
 
 .booksPage form input {
@@ -120,4 +122,21 @@
     color: white;
     cursor: pointer;
     margin-bottom: 10px;
+}
+
+
+.booksPage div.bookStock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.booksPage div.bookStock div {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0 10px; /* Add horizontal margin to separate the two divs */
 }

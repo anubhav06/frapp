@@ -7,6 +7,7 @@ Modal.setAppElement('#root') // replace '#root' with the id of your app's root e
 const BooksPage = () => {
 
     let [books, setBooks] = useState([])
+    let [bookStock, setBookStock] = useState([])
     let [searchedBooks, setSearchedBooks] = useState([])
     let [importedBooks, setImportedBooks] = useState([])
     let [modalIsOpen, setModalIsOpen] = useState(false)
@@ -164,7 +165,23 @@ const BooksPage = () => {
                 alert("Error: ", data.message)
             }
         }
+
+        let getBookStock = async () => {
+            // Make a GET request to the API.
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-book-stock/`)
+            let data = await response.json()
+
+            if (response.status === 200) {
+                setBookStock(data)
+                console.log(data)
+            }
+            else {
+                alert("Error: ", data.message)
+            }
+        }
+
         getBooks()
+        getBookStock()
     }, [])
 
     return (
@@ -178,6 +195,11 @@ const BooksPage = () => {
                 <a href="/members">Members</a>
                 <a href="/books">Books</a>
             </nav>
+
+            <div className="bookStock">
+                <div> Available Books: {bookStock.totalBooks} </div>
+                <div> Borrowed Books: {bookStock.borrowedBooks} </div>
+            </div>
 
             <h2> Add Book </h2>
             <form onSubmit={createBook}>

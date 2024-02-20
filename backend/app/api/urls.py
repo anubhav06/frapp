@@ -21,8 +21,10 @@ urlpatterns = [
     # Books issue and return
     path('issue-book/', views.issue_book, name="issueBook"),
     path('return-book/', views.return_book, name="returnBook"),
-    path('get-borrowed-books/', views.get_borrowed_books, name="getBorrowedBooks"),
     path('get-fees/', views.get_fees, name="getFees"),
 
+    path('get-borrowed-books/', views.get_borrowed_books, name="getBorrowedBooks"),
     path('search-books/', views.search_books, name="searchBooks"),
+    path('get-book-stock/', views.get_book_stock, name="getBookStock"),
+
 ]
