@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
+import './MembersPage.css'
 
 Modal.setAppElement('#root') // replace '#root' with the id of your app's root element
 
@@ -103,8 +104,16 @@ const MembersPage = () => {
     }, [])
 
     return (
-        <div>
+        <div className="membersPage">
             <h1> Library Management System </h1>
+
+            <h2> Members </h2>
+
+            <nav>
+                <a href="/">Transactions</a>
+                <a href="/members">Members</a>
+                <a href="/books">Books</a>
+            </nav>
 
             <h2> Create Member </h2>
             <form onSubmit={createMember}>
@@ -129,7 +138,7 @@ const MembersPage = () => {
                 })}
             </ul>
 
-            <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
+            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className='Modal-membersPage'>
                 <h2>Edit Member</h2>
                 <form onSubmit={updateMember}>
                     <input type="text" name='email' defaultValue={editingMember?.email} disabled />

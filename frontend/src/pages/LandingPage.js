@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
+import './LandingPage.css'
 
 Modal.setAppElement('#root') // replace '#root' with the id of your app's root element
 
@@ -143,54 +144,65 @@ const LandingPage = () => {
 
 
     return (
-        <div>
+        <div className="landingPage">
             <h1> Library Management System </h1>
 
-            <h2>Issue Book</h2>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Books:
-                    <select value={selectedBook} onChange={e => setSelectedBook(e.target.value)}>
-                        {books.map(book => <option key={book.bookID} value={book.bookID}>{book.title}</option>)}
-                    </select>
-                </label>
-                <label>
-                    Members:
-                    <select value={selectedMember} onChange={e => setSelectedMember(e.target.value)}>
-                        {members.map(member => <option key={member.email} value={member.email}>{member.name}</option>)}
-                    </select>
-                </label>
-                <label>
-                    Date:
-                    <input type="date" value={dateBorrowed} onChange={e => setDateBorrowed(e.target.value)} />
-                </label>
-                <input type="submit" value="Issue Book" />
-            </form>
+            <h2> Transactions </h2>
 
+            <nav>
+                <a href="/">Transactions</a>
+                <a href="/members">Members</a>
+                <a href="/books">Books</a>
+            </nav>
 
-            <h2> Return Book</h2>
-            <form>
-                <label>
-                    Member:
-                    <select value={selectedMember} onChange={e => setSelectedMember(e.target.value)}>
-                        {members.map(member => <option key={member.email} value={member.email}>{member.name}</option>)}
-                    </select>
-                </label>
-                <label>
-                    Book:
-                    <select value={selectedBook} onChange={e => setSelectedBook(e.target.value)}>
-                        {borrowedBooks.map(book => <option key={book.bookID} value={book.bookID}>{book.title}</option>)}
-                    </select>
-                </label>
-                <label>
-                    Date:
-                    <input type="date" value={dateReturned} onChange={e => setDateReturned(e.target.value)} />
-                </label>
-                <input type="submit" value="Return Book" onClick={handleReturn} />
-                <input type="submit" value="Calculate Fees" onClick={calculateFees} />
-            </form>
-
-
+                
+            <div class="row">
+                <div class="column">
+                    <h3>Issue Book</h3>
+                    <form onSubmit={handleSubmit}>
+                        <label>
+                            Books:
+                            <select value={selectedBook} onChange={e => setSelectedBook(e.target.value)}>
+                                {books.map(book => <option key={book.bookID} value={book.bookID}>{book.title}</option>)}
+                            </select>
+                        </label>
+                        <label>
+                            Members:
+                            <select value={selectedMember} onChange={e => setSelectedMember(e.target.value)}>
+                                {members.map(member => <option key={member.email} value={member.email}>{member.name}</option>)}
+                            </select>
+                        </label>
+                        <label>
+                            Date:
+                            <input type="date" value={dateBorrowed} onChange={e => setDateBorrowed(e.target.value)} />
+                        </label>
+                        <input type="submit" value="Issue Book" />
+                    </form>
+                </div>
+                <div class="column">
+                    <h3> Return Book</h3>
+                    <form>
+                        <label>
+                            Member:
+                            <select value={selectedMember} onChange={e => setSelectedMember(e.target.value)}>
+                                {members.map(member => <option key={member.email} value={member.email}>{member.name}</option>)}
+                            </select>
+                        </label>
+                        <label>
+                            Book:
+                            <select value={selectedBook} onChange={e => setSelectedBook(e.target.value)}>
+                                {borrowedBooks.map(book => <option key={book.bookID} value={book.bookID}>{book.title}</option>)}
+                            </select>
+                        </label>
+                        <label>
+                            Date:
+                            <input type="date" value={dateReturned} onChange={e => setDateReturned(e.target.value)} />
+                        </label>
+                        <input type="submit" value="Return Book" onClick={handleReturn} />
+                        <input type="submit" value="Calculate Fees" onClick={calculateFees} />
+                    </form>
+                </div>
+            </div>
         </div>
     )
 }

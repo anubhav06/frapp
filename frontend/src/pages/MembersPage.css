@@ -1,0 +1,115 @@
+.membersPage body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.membersPage h1 {
+    text-align: center;
+    padding: 20px 0;
+    color: #333;
+}
+
+.membersPage h1,
+.membersPage h2 {
+    text-align: center;
+    color: #333;
+}
+
+.membersPage nav {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.membersPage nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.membersPage nav a:hover {
+    color: #0056b3;
+}
+
+.membersPage form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.membersPage form input[type="text"],
+.membersPage form button {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.membersPage form button {
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+}
+
+.membersPage form button:hover {
+    background-color: #0056b3;
+}
+
+.membersPage ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.membersPage ul div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.membersPage ul button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+}
+
+.membersPage ul button:hover {
+    background-color: #0056b3;
+}
+
+.Modal-membersPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.Modal-membersPage button {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+}
+
+.Modal-membersPage button:hover {
+    background-color: #0056b3;
+}
+
+/* Modal FORM */
+

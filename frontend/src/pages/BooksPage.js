@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
+import './BooksPage.css'
 
 Modal.setAppElement('#root') // replace '#root' with the id of your app's root element
 
@@ -100,7 +101,6 @@ const BooksPage = () => {
 
         if (response.status === 200) {
             setSearchedBooks(data)
-            console.log("Data: ", data)
         } else {
             alert("Error: ", data.message)
         }
@@ -157,7 +157,6 @@ const BooksPage = () => {
             // Make a GET request to the API.
             let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-books/`)
             let data = await response.json()
-            console.log("Data: ", data)
 
             if (response.status === 200) {
                 setBooks(data)
@@ -169,8 +168,16 @@ const BooksPage = () => {
     }, [])
 
     return (
-        <div>
+        <div className="booksPage">
             <h1> Library Management System </h1>
+
+            <h2> Books </h2>
+
+            <nav>
+                <a href="/">Transactions</a>
+                <a href="/members">Members</a>
+                <a href="/books">Books</a>
+            </nav>
 
             <h2> Add Book </h2>
             <form onSubmit={createBook}>
@@ -188,22 +195,25 @@ const BooksPage = () => {
             </form>
             <div>
                 {importedBooks.length > 0 && (
-                    <button onClick={insertAllBooks}>Insert All Books</button>
+                    <button onClick={insertAllBooks} className='insertBtn'>Insert All Books</button>
                 )}
-                
-                {importedBooks.map((book, index) => {
-                    return (
-                        <div key={index}>
-                            {index + 1}.&nbsp;
-                            <li>
-                                Book ID: {book.bookID} <br />
-                                Title: {book.title} <br />
-                                Author(s): {book.authors} <br />
-                            </li>
-                        </div>
-                    )
-                }
-                )}
+
+                <ul>
+
+                    {importedBooks.map((book, index) => {
+                        return (
+                            <div key={index}>
+                                {index + 1}.&nbsp;
+                                <li>
+                                    Book ID: {book.bookID} <br />
+                                    <h5> Title: {book.title} </h5>
+                                    Author(s): {book.authors} <br />
+                                </li>
+                            </div>
+                        )
+                    }
+                    )}
+                </ul>
             </div>
 
             <h2> Search Books </h2>
@@ -212,21 +222,21 @@ const BooksPage = () => {
                 <input type="text" name='author' placeholder="Author(s)" />
                 <button type="submit">Search</button>
             </form>
-            <div>
+            <ul>
                 {searchedBooks.map((book, index) => {
                     return (
                         <div key={index}>
                             {index + 1}.&nbsp;
-                            <li>
+                            <div>
                                 Book ID: {book.bookID} <br />
-                                Title: {book.title} <br />
+                                <h5> Title: {book.title} </h5>
                                 Author(s): {book.author} <br />
                                 Quantity: {book.quantity} <br />
-                            </li>
+                            </div>
                         </div>
                     )
                 })}
-            </div>
+            </ul>
 
             <h2> Book list </h2>
             <ul>
@@ -234,12 +244,12 @@ const BooksPage = () => {
                     return (
                         <div key={index}>
                             {index + 1}.&nbsp;
-                            <li>
+                            <div>
                                 Book ID: {book.bookID} <br />
-                                Title: {book.title} <br />
+                                <h5> Title: {book.title} </h5>
                                 Author(s): {book.author} <br />
                                 Quantity: {book.quantity} <br />
-                            </li>
+                            </div>
                             <button onClick={() => openModal(book)}>Edit</button>
                             <button onClick={deleteBook} name='bookID' value={book.bookID}>Delete</button>
                         </div>

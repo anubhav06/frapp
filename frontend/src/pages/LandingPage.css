@@ -1,0 +1,87 @@
+.landingPage .column {
+    float: left;
+    width: 50%;
+}
+
+/* Clear floats after the columns */
+.landingPage .row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.landingPage body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.landingPage h1 {
+    text-align: center;
+    padding: 20px 0;
+    color: #333;
+}
+
+.landingPage .row {
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.landingPage .column {
+    flex: 1;
+    margin: 10px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+.landingPage form {
+    display: flex;
+    flex-direction: column;
+}
+
+.landingPage label {
+    margin-bottom: 10px;
+}
+
+.landingPage select, .landingPage input[type="date"], .landingPage input[type="submit"] {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.landingPage input[type="submit"] {
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+}
+
+.landingPage input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.landingPage h2 {
+    text-align: center;
+    color: #333;
+}
+
+.landingPage nav {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.landingPage nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.landingPage nav a:hover {
+    color: #0056b3;
+}
